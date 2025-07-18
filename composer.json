@@ -1,0 +1,32 @@
+{
+    "name": "mikomagni/statamic-environment",
+    "version": "1.0.0",
+    "type": "statamic-addon",
+    "license": "MIT",
+    "homepage": "https://clandestina.com.au",
+    "keywords": ["statamic", "addon", "environment", "indicator", "development"],
+    "autoload": {
+        "psr-4": {
+            "MikoMagni\\StatamicEnvironment\\": "src"
+        }
+    },
+    "require": {
+        "statamic/cms": "^5.0"
+    },
+    "extra": {
+        "statamic": {
+            "name": "Statamic Environment Indicator",
+            "description": "Statamic Environment Indicator and Dashboard Widget"
+        },
+        "laravel": {
+            "providers": [
+                "MikoMagni\\StatamicEnvironment\\ServiceProvider"
+            ]
+        },
+        "publish": {
+            "css": "public/vendor/statamic-environment/css"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
