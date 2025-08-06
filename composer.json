@@ -4,6 +4,7 @@
     "type": "statamic-addon",
     "license": "MIT",
     "homepage": "https://clandestina.com.au",
+    "description": "Statamic Environment Indicator and Dashboard Widget",
     "keywords": ["statamic", "addon", "environment", "indicator", "development"],
     "autoload": {
         "psr-4": {
