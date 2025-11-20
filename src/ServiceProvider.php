@@ -14,7 +14,9 @@ class ServiceProvider extends AddonServiceProvider
         StatamicEnvWidget::class
     ];
 
-    protected $stylesheets = [];
+    protected $stylesheets = [
+        '/vendor/statamic-environment/css/dynamic.css'
+    ];
 
     protected $middlewareGroups = [
         'statamic.cp' => [
@@ -22,24 +24,10 @@ class ServiceProvider extends AddonServiceProvider
         ]
     ];
 
-    protected $publishAfterBoot = true;
+    protected $publishAfterInstall = true;
 
-    protected function bootAddonStyles()
+    public function bootAddon()
     {
-        // Only add stylesheet after publishing
-        if ($this->app->runningInConsole()) {
-            return [];
-        }
-
-        return [
-            'vendor/statamic-environment/css/dynamic.css'
-        ];
-    }
-
-    public function boot()
-    {
-        parent::boot();
-
         $this->publishes([
             __DIR__ . '/../config/statamic_environment.php' => config_path('statamic_environment.php'),
         ], 'statamic-env-config');
@@ -50,6 +38,7 @@ class ServiceProvider extends AddonServiceProvider
 
         $this->mergeConfigFrom(__DIR__ . '/../config/statamic_environment.php', 'statamic_environment');
 
+        // Generate dynamic CSS on every request (not in console)
         if (!$this->app->runningInConsole()) {
             try {
                 $this->generateDynamicCss();
@@ -59,8 +48,6 @@ class ServiceProvider extends AddonServiceProvider
                 }
             }
         }
-
-        $this->stylesheets = $this->bootAddonStyles();
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'statamic_environment');
 
@@ -95,12 +82,31 @@ class ServiceProvider extends AddonServiceProvider
         $cssPath = public_path('vendor/statamic-environment/css/dynamic.css');
         $cssDir = dirname($cssPath);
         $configPath = config_path('statamic_environment.php');
+        $cssAssetPath = __DIR__ . '/Http/CssAsset.php';
 
-        if (File::exists($cssPath) && File::exists($configPath)) {
+        if (File::exists($cssPath)) {
             $cssTime = File::lastModified($cssPath);
-            $configTime = File::lastModified($configPath);
 
-            if ($cssTime >= $configTime) {
+            // Check if config file was modified
+            if (File::exists($configPath)) {
+                $configTime = File::lastModified($configPath);
+                if ($configTime > $cssTime) {
+                    // Config changed, regenerate
+                    File::delete($cssPath);
+                }
+            }
+
+            // Check if CssAsset.php was modified
+            if (File::exists($cssAssetPath)) {
+                $assetTime = File::lastModified($cssAssetPath);
+                if ($assetTime > $cssTime) {
+                    // CssAsset.php changed, regenerate
+                    File::delete($cssPath);
+                }
+            }
+
+            // If CSS still exists, it's up to date
+            if (File::exists($cssPath)) {
                 return;
             }
         }

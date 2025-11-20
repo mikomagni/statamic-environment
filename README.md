@@ -1,36 +1,63 @@
 # Statamic Environment Indicator
 
-> Statamic Environment Indicator is a Statamic addon that provides visual indicators and a widget to help identify your current environment (local, development, production).
+> **🚧 DEV BRANCH - Statamic 6 Alpha**
+> This is the development branch for Statamic 6 compatibility. For production use with Statamic 5, please use the [main branch](../../tree/main) or install v1.x.
+
+> Visual environment indicators for Statamic 6 control panel - helps you instantly identify which environment you're working in.
 
 ## Features
 
-This addon does:
+- **Visual Header Badge** - Displays environment name in the CP header (Local, Staging, Production)
+- **Background Patterns** - Customizable header patterns (stripes, dots, checkerboard, solid)
+- **Dashboard Widget** - Shows detailed environment information
+- **Highly Configurable** - Custom environment types, colors, labels, and patterns
+- **Translation Ready** - Full i18n support
+- **Auto-Regenerating CSS** - Changes to config or CSS apply automatically
 
-- Displays a visual indicator in the CP header showing your current environment
-- Provides a dashboard widget with environment details
-- Helps prevent accidents by making the environment clearly visible
-- Supports local, development, staging, and production environments
-- Configurable environment names and labels
 
+## Requirements
 
-## How to Install
+- **Statamic 6.0+** (alpha)
+- **Laravel 12.0+**
+- **PHP 8.3+**
 
-You can install this addon via Composer:
+> **Note:** For Statamic 5, use version 1.x from the main branch.
 
-``` bash
-composer require mikomagni/statamic-environment
+## Installation
+
+### For Statamic 6 Alpha Testing
+
+Install from the v6 branch:
+
+```bash
+composer require mikomagni/statamic-environment:dev-v6
 ```
 
-run
+Or add to your `composer.json`:
 
-``` bash
+```json
+{
+    "require": {
+        "mikomagni/statamic-environment": "dev-v6"
+    }
+}
+```
+
+### For Statamic 5 (Stable)
+
+```bash
+composer require mikomagni/statamic-environment:^1.0
+```
+
+Publish the configuration file:
+
+```bash
 php artisan vendor:publish --tag=statamic-env-config
-php artisan vendor:publish --tag=statamic-env-lang  # Optional: for custom translations
 ```
 
 ## Enable Widget
 
-Add the widget to your control panel configuration in `config/statamic/cp.php` file:
+Add the widget to your control panel in `config/statamic/cp.php`:
 
 ```php
 'widgets' => [
@@ -44,42 +71,158 @@ Add the widget to your control panel configuration in `config/statamic/cp.php` f
 
 ## Configuration
 
-After publishing the config file, you can customize the environment mappings in `config/statamic_environment.php`:
+All configuration is done in `config/statamic_environment.php`.
 
-### Standard Configuration
+### Environment Types
+
+Define which `APP_ENV` values map to which environment types:
+
 ```php
-return [
-    'environments' => [
-        'local' => ['local'],
-        'staging' => ['staging', 'dev'],
-        'production' => ['production', 'prod', 'live'],
-    ],
-    'labels' => [
-        'local' => 'Local',
-        'staging' => 'Staging',
-        'production' => 'Live',
-    ],
-    // ... icons and colors
-];
+'environments' => [
+    'local' => ['local'],
+    'staging' => ['staging', 'dev'],
+    'production' => ['production', 'prod', 'live'],
+],
 ```
 
-### Custom Environment Types
-You can define completely custom environment type names instead of the standard `local`, `staging`, `production`:
+### Labels & Icons
+
+Customize the display text and emojis:
+
+```php
+'labels' => [
+    'local' => 'Local',
+    'staging' => 'Staging',
+    'production' => 'Live',
+],
+
+'icons' => [
+    'local' => '👨‍💻',
+    'staging' => '🔥',
+    'production' => '🚀',
+    'undefined' => '🚨',
+],
+```
+
+### Badge Colors
+
+Customize the header badge colors:
+
+```php
+'colors' => [
+    'local' => [
+        'background' => 'rgb(39, 145, 16)',
+        'color' => 'white',
+    ],
+    'staging' => [
+        'background' => 'rgb(153, 0, 0)',
+        'color' => 'white',
+    ],
+    'production' => [
+        'background' => 'rgb(43, 45, 48)',
+        'color' => 'white',
+        'border' => '1px solid white',
+    ],
+],
+```
+
+### Widget Details
+
+Control when the widget shows detailed environment information:
+
+```php
+'widget' => [
+    'show_details' => ['local', 'staging'], // Show for specific environments
+    // 'show_details' => true,              // Always show
+    // 'show_details' => false,             // Never show
+],
+```
+
+**Options:**
+- **Array** - Show details only for specified environment types: `['local', 'staging']`
+- **`true`** - Always show details for all environments
+- **`false`** - Never show details
+
+### Background Patterns
+
+Add visual patterns to the CP header for instant environment identification:
+
+```php
+'patterns' => [
+    'local' => [
+        'type' => 'stripes',
+        'angle' => -55,
+        'primary' => '#1a1a1a',
+        'secondary' => 'rgba(41, 82, 32, 0.8)',
+    ],
+    'staging' => [
+        'type' => 'stripes',
+        'angle' => -55,
+        'primary' => '#1a1a1a',
+        'secondary' => 'rgba(82, 32, 32, 0.8)',
+    ],
+    'production' => [
+        'type' => 'solid',
+        'primary' => '#1a1a1a',
+    ],
+],
+```
+
+#### Pattern Types
+
+**Stripes** (diagonal lines):
+```php
+'type' => 'stripes',
+'angle' => -55,              // Angle in degrees
+'primary' => '#1a1a1a',      // Background color
+'secondary' => 'rgba(...)',  // Stripe color
+```
+
+**Dots** (polka dot pattern):
+```php
+'type' => 'dots',
+'size' => '4px',             // Dot size
+'spacing' => '20px',         // Space between dots
+'primary' => '#1a1a1a',      // Background color
+'secondary' => 'rgba(...)',  // Dot color
+```
+
+**Checkerboard**:
+```php
+'type' => 'checkerboard',
+'size' => 20,                // Square size in pixels
+'primary' => '#1a1a1a',      // Background color
+'secondary' => 'rgba(...)',  // Checkerboard color
+```
+
+**Solid** (plain color):
+```php
+'type' => 'solid',
+'primary' => '#1a1a1a',      // Background color
+```
+
+> **Note:** Statamic 6 CP header is always dark, so colors are defined directly with `primary` and `secondary` keys (no light/dark mode nesting needed).
+
+## Custom Environment Types
+
+You can completely customize environment type names:
 
 ```php
 return [
     'environments' => [
         'development' => ['local', 'dev'],
-        'testing' => ['test', 'staging', 'qa'],
+        'testing' => ['test', 'qa', 'staging'],
         'live' => ['production', 'prod'],
         'uat' => ['uat', 'acceptance'],
     ],
+
     'labels' => [
         'development' => 'Dev',
         'testing' => 'Test',
         'live' => 'Production',
         'uat' => 'UAT',
     ],
+
     'icons' => [
         'development' => '🛠️',
         'testing' => '🧪',
@@ -87,6 +230,7 @@ return [
         'uat' => '✅',
         'undefined' => '🚨',
     ],
+
     'colors' => [
         'development' => [
             'background' => 'rgb(0, 123, 255)',
@@ -105,32 +249,34 @@ return [
             'color' => 'white',
         ],
     ],
+
+    'patterns' => [
+        'development' => [
+            'type' => 'stripes',
+            'angle' => -55,
+            'primary' => '#1a1a1a',
+            'secondary' => 'rgba(0, 123, 255, 0.3)',
+        ],
+        'testing' => [
+            'type' => 'dots',
+            'size' => '5px',
+            'spacing' => '15px',
+            'primary' => '#1a1a1a',
+            'secondary' => 'rgba(255, 193, 7, 0.4)',
+        ],
+        'live' => [
+            'type' => 'solid',
+            'primary' => '#1a1a1a',
+        ],
+        'uat' => [
+            'type' => 'checkerboard',
+            'size' => 15,
+            'primary' => '#1a1a1a',
+            'secondary' => 'rgba(108, 117, 125, 0.3)',
+        ],
+    ],
 ];
 ```
-
-### Widget Display Options
-You can control when the widget shows additional environment details:
-
-```php
-'widget' => [
-    'show_details' => ['local', 'staging'], // Environment types that show additional info
-    'always_show_details' => false,         // Set to true to always show details regardless of environment
-    'never_show_details' => false,          // Set to true to never show details regardless of environment
-],
-```
-
-**Options:**
-- `show_details`: Array of environment types that should display the detailed information table
-- `always_show_details`: When `true`, always shows details regardless of environment type
-- `never_show_details`: When `true`, never shows details regardless of environment type
-
-This allows you to:
-- **Define custom environment type names** - Replace `local`, `staging`, `production` with your own naming convention
-- **Map multiple APP_ENV values** to each environment type
-- **Customize display labels** for each environment type (both in widget and header badges)
-- **Change emoji icons** used in the widget
-- **Customize badge colors** for each environment type in the header
-- **Configure background patterns** for visual environment identification
 
 ## Translation Support
 

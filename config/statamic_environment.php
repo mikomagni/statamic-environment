@@ -128,9 +128,9 @@ return [
     */
 
     'widget' => [
-        'show_details' => ['local', 'staging'], // Environment types that show additional info
-        'always_show_details' => false,         // Set to true to always show details regardless of environment
-        'never_show_details' => false,          // Set to true to never show details regardless of environment
+        'show_details' => ['local', 'staging'], // Show details for local and staging only
+        // 'show_details' => true,              // Always show details
+        // 'show_details' => false,             // Never show details
     ],
 
     /*
@@ -147,35 +147,18 @@ return [
         'local' => [
             'type' => 'stripes',
             'angle' => -55,
-            'light_mode' => [
-                'primary' => '#ffffff',
-                'secondary' => 'rgba(211, 255, 201, 0.8)',
-            ],
-            'dark_mode' => [
-                'primary' => '#1a1a1a',
-                'secondary' => 'rgba(41, 82, 32, 0.8)',
-            ],
+            'primary' => '#2a2627',
+            'secondary' => 'rgba(26, 60, 19, 0.5)',
         ],
         'staging' => [
             'type' => 'stripes',
             'angle' => -55,
-            'light_mode' => [
-                'primary' => '#ffffff',
-                'secondary' => 'rgba(255, 201, 201, 0.8)',
-            ],
-            'dark_mode' => [
-                'primary' => '#1a1a1a',
-                'secondary' => 'rgba(82, 32, 32, 0.8)',
-            ],
+            'primary' => '#2a2627',
+            'secondary' => 'rgba(82, 32, 32, 0.6)',
         ],
         'production' => [
             'type' => 'solid',
-            'light_mode' => [
-                'primary' => '#ffffff',
-            ],
-            'dark_mode' => [
-                'primary' => '#1a1a1a',
-            ],
+            'primary' => '#1a1a1a',
         ],
 
         // Example of different pattern types:
@@ -183,26 +166,14 @@ return [
         //     'type' => 'dots',
         //     'size' => '4px',
         //     'spacing' => '20px',
-        //     'light_mode' => [
-        //         'primary' => '#ffffff',
-        //         'secondary' => '#ff6b6b',
-        //     ],
-        //     'dark_mode' => [
-        //         'primary' => '#1a1a1a',
-        //         'secondary' => '#ff4757',
-        //     ],
+        //     'primary' => '#1a1a1a',
+        //     'secondary' => '#ff4757',
         // ],
         // 'qa_env' => [
         //     'type' => 'checkerboard',
         //     'size' => 20,  // Size of checkerboard squares in pixels
-        //     'light_mode' => [
-        //         'primary' => '#ffffff',
-        //         'secondary' => '#ffd93d',
-        //     ],
-        //     'dark_mode' => [
-        //         'primary' => '#1a1a1a',
-        //         'secondary' => '#ffab00',
-        //     ],
+        //     'primary' => '#1a1a1a',
+        //     'secondary' => '#ffab00',
         // ],
     ],
 ];

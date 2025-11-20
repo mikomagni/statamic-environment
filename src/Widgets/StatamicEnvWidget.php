@@ -23,13 +23,30 @@ class StatamicEnvWidget extends Widget
     {
         $env = env('APP_ENV', 'production');
         $envType = ServiceProvider::getEnvironmentType($env);
-        
+
         $config = config('statamic_environment', []);
+
+        // Ensure config is an array
+        if (!is_array($config)) {
+            $config = [];
+        }
+
         $labels = $config['labels'] ?? ['local' => 'Local', 'staging' => 'Staging', 'production' => 'Live'];
         $icons = $config['icons'] ?? ['local' => '👨‍💻', 'staging' => '🔥', 'production' => '🚀', 'undefined' => '🚨'];
-        
+
+        // Ensure labels and icons are arrays
+        if (!is_array($labels)) {
+            $labels = ['local' => 'Local', 'staging' => 'Staging', 'production' => 'Live'];
+        }
+        if (!is_array($icons)) {
+            $icons = ['local' => '👨‍💻', 'staging' => '🔥', 'production' => '🚀', 'undefined' => '🚨'];
+        }
+
         // Determine if we should show additional details
         $widgetConfig = $config['widget'] ?? [];
+        if (!is_array($widgetConfig)) {
+            $widgetConfig = [];
+        }
         $showDetails = $this->shouldShowDetails($envType, $widgetConfig);
 
         return view('statamic_environment::widgets.statamic-env', [
@@ -53,18 +70,19 @@ class StatamicEnvWidget extends Widget
      */
     private function shouldShowDetails($envType, $widgetConfig)
     {
-        // If never_show_details is true, never show details
-        if ($widgetConfig['never_show_details'] ?? false) {
-            return false;
+        $showDetails = $widgetConfig['show_details'] ?? ['local', 'staging'];
+
+        // If show_details is a boolean, return it directly
+        if (is_bool($showDetails)) {
+            return $showDetails;
         }
 
-        // If always_show_details is true, always show details
-        if ($widgetConfig['always_show_details'] ?? false) {
-            return true;
+        // If show_details is an array, check if current environment type is in it
+        if (is_array($showDetails)) {
+            return in_array($envType, $showDetails);
         }
 
-        // Otherwise, check if current environment type is in the show_details array
-        $showForTypes = $widgetConfig['show_details'] ?? ['local', 'staging'];
-        return in_array($envType, $showForTypes);
+        // Default to false if invalid value
+        return false;
     }
 }

@@ -1,18 +1,25 @@
 {
     "name": "mikomagni/statamic-environment",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "type": "statamic-addon",
     "license": "MIT",
-    "homepage": "https://clandestina.com.au",
-    "description": "Statamic Environment Indicator and Dashboard Widget",
-    "keywords": ["statamic", "addon", "environment", "indicator", "development"],
+    "homepage": "https://graffio.co",
+    "description": "Statamic Environment Indicator and Dashboard Widget for Statamic 6",
+    "keywords": [
+        "statamic",
+        "addon",
+        "environment",
+        "indicator",
+        "development"
+    ],
     "autoload": {
         "psr-4": {
             "MikoMagni\\StatamicEnvironment\\": "src"
         }
     },
     "require": {
-        "statamic/cms": "^5.0"
+        "php": "^8.3",
+        "statamic/cms": "^6.0"
     },
     "extra": {
         "statamic": {
@@ -29,5 +36,10 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    }
 }

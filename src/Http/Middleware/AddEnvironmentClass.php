@@ -27,10 +27,30 @@ class AddEnvironmentClass
                 $env = env('APP_ENV', 'production');
                 $envType = ServiceProvider::getEnvironmentType($env);
 
-                // Add class to body tag - use both actual env name and type
-                $content = preg_replace(
+                // Add classes to body tag - handle existing class attributes
+                $envClasses = 'env_' . $env . ' env_type_' . $envType;
+
+                $content = preg_replace_callback(
                     '/<body([^>]*)>/',
-                    '<body$1 class="env_' . $env . ' env_type_' . $envType . '">',
+                    function ($matches) use ($envClasses) {
+                        $attributes = $matches[1];
+
+                        // Check if class attribute already exists
+                        if (preg_match('/class=["\']([^"\']*)["\']/', $attributes, $classMatches)) {
+                            // Append to existing classes
+                            $existingClasses = $classMatches[1];
+                            $attributes = preg_replace(
+                                '/class=["\']([^"\']*)["\']/',
+                                'class="$1 ' . $envClasses . '"',
+                                $attributes
+                            );
+                        } else {
+                            // Add new class attribute
+                            $attributes .= ' class="' . $envClasses . '"';
+                        }
+
+                        return '<body' . $attributes . '>';
+                    },
                     $content
                 );
 

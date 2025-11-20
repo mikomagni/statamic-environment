@@ -7,11 +7,26 @@ class CssAsset
     public static function generateDynamicCss()
     {
         $config = config('statamic_environment', []);
+
+        // Ensure config is an array
+        if (!is_array($config)) {
+            $config = [];
+        }
+
         $labels = $config['labels'] ?? [
             'local' => 'Local',
             'staging' => 'Staging',
             'production' => 'Live'
         ];
+
+        // Ensure labels is an array
+        if (!is_array($labels)) {
+            $labels = [
+                'local' => 'Local',
+                'staging' => 'Staging',
+                'production' => 'Live'
+            ];
+        }
 
         $environments = $config['environments'] ?? [
             'local' => ['local'],
@@ -19,21 +34,47 @@ class CssAsset
             'production' => ['production', 'prod', 'live'],
         ];
 
+        // Ensure environments is an array
+        if (!is_array($environments)) {
+            $environments = [
+                'local' => ['local'],
+                'staging' => ['staging', 'dev'],
+                'production' => ['production', 'prod', 'live'],
+            ];
+        }
+
         $configColors = $config['colors'] ?? [];
+
+        // Ensure colors is an array
+        if (!is_array($configColors)) {
+            $configColors = [];
+        }
 
         $css = '';
 
-        $css .= self::generateGlobalStyles();
-
+        // Generate header background patterns
         $css .= self::generatePatternCss($config);
 
         foreach ($labels as $type => $label) {
+            // Ensure $label is a string
+            if (!is_string($label)) {
+                continue;
+            }
+
             $envNames = $environments[$type] ?? [];
 
-            $selectors = ["body.env_type_{$type} .global-header .hidden.md\\:block.shrink-0.v-popper--has-tooltip::after"];
+            // Ensure $envNames is an array
+            if (!is_array($envNames)) {
+                $envNames = [];
+            }
+
+            // Statamic 6 header badge - appears after "Breach Tools" link
+            $selectors = [
+                "body.env_type_{$type} header a[href*='/cp/'].text-white\\/85::after"
+            ];
 
             foreach ($envNames as $envName) {
-                $selectors[] = "body.env_{$envName} .global-header .hidden.md\\:block.shrink-0.v-popper--has-tooltip::after";
+                $selectors[] = "body.env_{$envName} header a[href*='/cp/'].text-white\\/85::after";
             }
 
             $selectorString = implode(",\n", $selectors);
@@ -43,17 +84,21 @@ class CssAsset
             $css .= "/* {$label} Environment Badge */\n";
             $css .= "{$selectorString} {\n";
             $css .= "    content: '{$label}';\n";
-            $css .= "    position: relative;\n";
-            $css .= "    right: -11px;\n";
-            $css .= "    top: -3.5px;\n";
+            $css .= "    display: inline-flex;\n";
+            $css .= "    align-items: center;\n";
+            $css .= "    justify-content: center;\n";
+            $css .= "    margin-left: 0.5rem;\n";
             $css .= "    font-weight: 600;\n";
-            $css .= "    font-size: 9px;\n";
+            $css .= "    font-size: 0.625rem;\n";
+            $css .= "    line-height: 1;\n";
             $css .= "    text-transform: uppercase;\n";
+            $css .= "    letter-spacing: 0.025em;\n";
             $css .= "    background: {$colors['background']};\n";
             $css .= "    color: {$colors['color']};\n";
-            $css .= "    padding: 2px 10px;\n";
-            $css .= "    border-radius: 100px;\n";
-            $css .= "    z-index: 50;\n";
+            $css .= "    padding: 0.25rem 0.625rem;\n";
+            $css .= "    border-radius: 0.375rem;\n";
+            $css .= "    white-space: nowrap;\n";
+            $css .= "    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);\n";
 
             if (isset($colors['border'])) {
                 $css .= "    border: {$colors['border']};\n";
@@ -86,17 +131,19 @@ class CssAsset
         return $colors[$type] ?? $colors['production'];
     }
 
-    private static function generateGlobalStyles()
-    {
-        return "/* Statamic Environment Indicator - Global Styles */\n" .
-               "/* Fix for global search background in both light and dark modes */\n" .
-               ".global-search {\n" .
-               "    background: white;\n" .
-               "}\n\n" .
-               "html.dark .global-search {\n" .
-               "    background: #2B2D30 !important;\n" .
-               "}\n\n";
-    }
+    // private static function generateGlobalStyles()
+    // {
+    //     return "/* Statamic Environment Indicator - Global Styles */\n" .
+    //            "/* Fix for global search background in both light and dark modes (Statamic 6) */\n" .
+    //            "header button[aria-label*='Search'] .group,\n" .
+    //            "header [data-global-search] {\n" .
+    //            "    background: black/40;\n" .
+    //            "}\n\n" .
+    //            "html.dark header button[aria-label*='Search'] .group,\n" .
+    //            "html.dark header [data-global-search] {\n" .
+    //            "    background: black/40 !important;\n" .
+    //            "}\n\n";
+    // }
 
     private static function generatePatternCss($config)
     {
@@ -105,7 +152,17 @@ class CssAsset
         $css = '';
 
         foreach ($patterns as $type => $pattern) {
+            if (!is_array($pattern)) {
+                continue;
+            }
+
             $envNames = $environments[$type] ?? [];
+
+            // Ensure $envNames is an array
+            if (!is_array($envNames)) {
+                $envNames = [];
+            }
+
             $css .= self::generatePatternForType($type, $envNames, $pattern);
         }
 
@@ -117,23 +174,31 @@ class CssAsset
         $css = '';
         $patternType = $pattern['type'] ?? 'solid';
 
-        $selectors = ["body.env_type_{$type} .global-header"];
+        // Statamic 6 header selector - targets fixed header with bg-global-header-bg class
+        $selectors = ["body.env_type_{$type} header.bg-global-header-bg.fixed"];
+
         foreach ($envNames as $envName) {
-            $selectors[] = "body.env_{$envName} .global-header";
+            $selectors[] = "body.env_{$envName} header.bg-global-header-bg.fixed";
         }
 
-        // Light mode
-        $lightSelectors = implode(",\n", $selectors);
-        $css .= "/* Light Mode - " . ucfirst($type) . " Environment */\n";
-        $css .= "{$lightSelectors} {\n";
-        $css .= self::generatePatternBackground($patternType, $pattern['light_mode'] ?? [], $pattern);
-        $css .= "}\n\n";
+        // Single pattern for dark header
+        $selectorString = implode(",\n", $selectors);
+        $css .= "/* " . ucfirst($type) . " Environment Header Pattern */\n";
+        $css .= "{$selectorString} {\n";
 
-        // Dark mode
-        $darkSelectors = implode(",\nhtml.dark ", array_map(fn($s) => "html.dark {$s}", $selectors));
-        $css .= "/* Dark Mode - " . ucfirst($type) . " Environment */\n";
-        $css .= "{$darkSelectors} {\n";
-        $css .= self::generatePatternBackground($patternType, $pattern['dark_mode'] ?? [], $pattern);
+        // Use colors - support both old nested structure and new flat structure
+        // New format: primary/secondary directly in $pattern
+        // Old format: nested under 'colors', 'dark_mode', or 'light_mode'
+        if (isset($pattern['primary'])) {
+            $colors = [
+                'primary' => $pattern['primary'],
+                'secondary' => $pattern['secondary'] ?? null,
+            ];
+        } else {
+            $colors = $pattern['colors'] ?? $pattern['dark_mode'] ?? $pattern['light_mode'] ?? [];
+        }
+        $css .= self::generatePatternBackground($patternType, $colors, $pattern);
+        $css .= "    background-attachment: fixed !important;\n";
         $css .= "}\n\n";
 
         return $css;
@@ -167,7 +232,7 @@ class CssAsset
                "        {$primary} {$size}px,\n" .
                "        {$secondary} {$size}px,\n" .
                "        {$secondary} " . ($size * 2) . "px\n" .
-               "    );\n";
+               "    ) !important;\n";
     }
 
     private static function generateDotsPattern($colors, $options)
@@ -201,6 +266,6 @@ class CssAsset
     private static function generateSolidPattern($colors)
     {
         $primary = $colors['primary'] ?? '#ffffff';
-        return "    background: {$primary};\n";
+        return "    background: {$primary} !important;\n";
     }
 }
