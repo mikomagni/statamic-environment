@@ -1,6 +1,6 @@
 # Statamic Environment Indicator
 
-> **🚧 DEV BRANCH - Statamic 6 Alpha**
+> **🚧 v6 BRANCH - Statamic 6 Alpha**
 > This is the development branch for Statamic 6 compatibility. For production use with Statamic 5, please use the [main branch](../../tree/main) or install v1.x.
 
 > Visual environment indicators for Statamic 6 control panel - helps you instantly identify which environment you're working in.
