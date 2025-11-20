@@ -30,7 +30,7 @@
 Install from the v6 branch:
 
 ```bash
-composer require mikomagni/statamic-environment:dev-v6
+composer require mikomagni/statamic-environment:v6.x-dev
 ```
 
 Or add to your `composer.json`:
@@ -38,7 +38,7 @@ Or add to your `composer.json`:
 ```json
 {
     "require": {
-        "mikomagni/statamic-environment": "dev-v6"
+        "mikomagni/statamic-environment": "v6.x-dev"
     }
 }
 ```

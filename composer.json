@@ -12,6 +12,12 @@
         "indicator",
         "development"
     ],
+    "authors": [
+        {
+            "name": "Graffio",
+            "homepage": "https://graffio.co"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "MikoMagni\\StatamicEnvironment\\": "src"
