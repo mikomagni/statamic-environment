@@ -1,6 +1,5 @@
 {
     "name": "mikomagni/statamic-environment",
-    "version": "2.0.0",
     "type": "statamic-addon",
     "license": "MIT",
     "homepage": "https://graffio.co",
