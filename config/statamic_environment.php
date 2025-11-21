@@ -85,17 +85,19 @@ return [
 
     'colors' => [
         'local' => [
-            'background' => 'rgb(39, 145, 16)',
+            'background' => 'rgba(39, 145, 16, 0.6)',
             'color' => 'white',
+            'border' => '1px solid rgba(39, 145, 16, 1)',
         ],
         'staging' => [
-            'background' => 'rgb(153, 0, 0)',
+            'background' => 'rgba(153, 0, 0, 0.6)',
             'color' => 'white',
+            'border' => '1px solid rgba(153, 0, 0, 1)',
         ],
         'production' => [
-            'background' => 'rgb(43, 45, 48)',
+            'background' => 'transparent',
             'color' => 'white',
-            'border' => '1px solid white',
+            'border' => '1px solid rgba(255, 255, 255, 0.5)',
         ],
 
         // Match your custom environment types:
@@ -146,19 +148,19 @@ return [
     'patterns' => [
         'local' => [
             'type' => 'stripes',
-            'angle' => -55,
-            'primary' => '#2a2627',
-            'secondary' => 'rgba(26, 60, 19, 0.5)',
+            'angle' => -45,
+            'primary' => 'transparent',
+            'secondary' => 'rgba(0, 0, 0, 0.6)',
         ],
         'staging' => [
             'type' => 'stripes',
-            'angle' => -55,
-            'primary' => '#2a2627',
-            'secondary' => 'rgba(82, 32, 32, 0.6)',
+            'angle' => -45,
+            'primary' => 'transparent',
+            'secondary' => 'rgba(255, 112, 163, 0.2)',
         ],
         'production' => [
             'type' => 'solid',
-            'primary' => '#1a1a1a',
+            'primary' => 'transparent',
         ],
 
         // Example of different pattern types:
