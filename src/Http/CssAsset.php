@@ -95,7 +95,7 @@ class CssAsset
             $css .= "    letter-spacing: 0.025em;\n";
             $css .= "    background: {$colors['background']};\n";
             $css .= "    color: {$colors['color']};\n";
-            $css .= "    padding: 0.25rem 0.625rem;\n";
+            $css .= "    padding: 0.18rem 0.5rem;\n";
             $css .= "    border-radius: 0.375rem;\n";
             $css .= "    white-space: nowrap;\n";
             $css .= "    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);\n";
