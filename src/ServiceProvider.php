@@ -24,12 +24,9 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
-        // Register stylesheet only if it exists
-        if (file_exists(public_path('vendor/statamic-environment/css/dynamic.css'))) {
-            $this->stylesheets = [
-                '/vendor/statamic-environment/css/dynamic.css'
-            ];
-        }
+        // Register the dynamically generated CSS
+        \Statamic\Statamic::style('statamic-environment', '/vendor/statamic-environment/css/dynamic.css');
+
         $this->publishes([
             __DIR__ . '/../config/statamic_environment.php' => config_path('statamic_environment.php'),
         ], 'statamic-env-config');
