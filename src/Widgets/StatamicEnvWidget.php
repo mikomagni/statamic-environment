@@ -21,7 +21,7 @@ class StatamicEnvWidget extends Widget
      */
     public function html()
     {
-        $env = env('APP_ENV', 'production');
+        $env = config('app.env', 'production');
         $envType = ServiceProvider::getEnvironmentType($env);
 
         $config = config('statamic_environment', []);
@@ -55,9 +55,15 @@ class StatamicEnvWidget extends Widget
             'env_label' => $labels[$envType] ?? 'Unknown',
             'env_icon' => $icons[$envType] ?? $icons['undefined'],
             'show_details' => $showDetails,
-            'app_name' => env('APP_NAME'),
-            'app_url' => env('APP_URL'),
-            'mail_from_address' => env('MAIL_FROM_ADDRESS'),
+            'app_name' => config('app.name'),
+            'app_url' => config('app.url'),
+            'app_debug' => (bool) config('app.debug'),
+            'mail_mailer' => config('mail.default'),
+            'mail_from_address' => config('mail.from.address'),
+            'git_enabled' => (bool) config('statamic.git.enabled'),
+            'git_push' => (bool) config('statamic.git.push'),
+            'static_caching_strategy' => config('statamic.static_caching.strategy'),
+            'debugbar_enabled' => (bool) config('debugbar.enabled'),
         ]);
     }
 

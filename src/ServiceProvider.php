@@ -60,7 +60,7 @@ class ServiceProvider extends AddonServiceProvider
 
     public static function getEnvironmentType($env = null)
     {
-        $env = $env ?: env('APP_ENV', 'production');
+        $env = $env ?: config('app.env', 'production');
         $environments = config('statamic_environment.environments', [
             'local' => ['local'],
             'staging' => ['staging', 'dev'],

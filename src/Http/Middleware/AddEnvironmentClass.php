@@ -24,7 +24,7 @@ class AddEnvironmentClass
 
             // Only process HTML content
             if ($content && strpos($content, '<body') !== false) {
-                $env = env('APP_ENV', 'production');
+                $env = config('app.env', 'production');
                 $envType = ServiceProvider::getEnvironmentType($env);
 
                 // Add classes to body tag - handle existing class attributes

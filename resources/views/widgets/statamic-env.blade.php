@@ -30,15 +30,15 @@
             </div>
             <div class="flex items-center justify-between py-2 ps-5 pe-3">
                 <span>{{ __('statamic_environment::widget.app_debug') }}</span>
-                <span>{{ env('APP_DEBUG') == 'true' ? __('statamic_environment::widget.true') : __('statamic_environment::widget.false') }}</span>
+                <span>{{ $app_debug ? __('statamic_environment::widget.true') : __('statamic_environment::widget.false') }}</span>
             </div>
             <div class="flex items-center justify-between py-2 ps-5 pe-3">
                 <span>{{ __('statamic_environment::widget.app_url') }}</span>
                 <span>{{ $app_url }}</span>
             </div>
             <div class="flex items-center justify-between py-2 ps-5 pe-3">
-                <span>{!! !empty(env('MAIL_DRIVER')) ? __('statamic_environment::widget.mail_driver') : __('statamic_environment::widget.mail_mailer') !!}</span>
-                <span>{{ !empty(env('MAIL_DRIVER')) ? env('MAIL_DRIVER') : env('MAIL_MAILER') }}</span>
+                <span>{{ __('statamic_environment::widget.mail_mailer') }}</span>
+                <span>{{ $mail_mailer }}</span>
             </div>
             <div class="flex items-center justify-between py-2 ps-5 pe-3">
                 <span>{{ __('statamic_environment::widget.mail_from_address') }}</span>
@@ -46,19 +46,19 @@
             </div>
             <div class="flex items-center justify-between py-2 ps-5 pe-3">
                 <span>{{ __('statamic_environment::widget.statamic_git_enabled') }}</span>
-                <span>{{ env('STATAMIC_GIT_ENABLED') == 'true' ? __('statamic_environment::widget.true') : __('statamic_environment::widget.false') }}</span>
+                <span>{{ $git_enabled ? __('statamic_environment::widget.true') : __('statamic_environment::widget.false') }}</span>
             </div>
             <div class="flex items-center justify-between py-2 ps-5 pe-3">
                 <span>{{ __('statamic_environment::widget.statamic_git_push') }}</span>
-                <span>{{ env('STATAMIC_GIT_PUSH') == 'true' ? __('statamic_environment::widget.true') : __('statamic_environment::widget.false') }}</span>
+                <span>{{ $git_push ? __('statamic_environment::widget.true') : __('statamic_environment::widget.false') }}</span>
             </div>
             <div class="flex items-center justify-between py-2 ps-5 pe-3">
                 <span>STATAMIC_STATIC_CACHING_STRATEGY</span>
-                <span>{{ env('STATAMIC_STATIC_CACHING_STRATEGY') ?? 'null' }}</span>
+                <span>{{ $static_caching_strategy ?? 'null' }}</span>
             </div>
             <div class="flex items-center justify-between py-2 ps-5 pe-3">
                 <span>DEBUGBAR_ENABLED</span>
-                <span>{{ env('DEBUGBAR_ENABLED') == 'true' ? __('statamic_environment::widget.true') : __('statamic_environment::widget.false') }}</span>
+                <span>{{ $debugbar_enabled ? __('statamic_environment::widget.true') : __('statamic_environment::widget.false') }}</span>
             </div>
         </div>
 </div>
