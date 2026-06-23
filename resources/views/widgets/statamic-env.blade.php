@@ -1,4 +1,4 @@
-<div class="@container/panel relative bg-gray-150 [.bg-architectural-lines_&]:backdrop-blur-[10px] dark:bg-gray-950 dark:inset-shadow-2xs dark:inset-shadow-black w-full rounded-2xl mb-5 max-[600px]:p-1.25 p-1.75 focus-none starting-style-transition starting-style-transition--siblings env_{{ $env }} env_type_{{ $env_type }}" data-ui-panel>
+<div class="@container/panel relative bg-gray-150 [.bg-architectural-lines_&]:backdrop-blur-[10px] dark:bg-gray-950/35 dark:inset-shadow-2xs dark:inset-shadow-black w-full rounded-2xl mb-8 max-[600px]:p-1.25 p-1.75 focus-none starting-style-transition starting-style-transition--siblings env_{{ $env }} env_type_{{ $env_type }}" data-ui-panel>
     <div class="bg-white dark:bg-gray-850 rounded-xl shadow-ui-md" data-ui-card data-inset="true">
         <p class="flex items-center gap-2 text-sm py-3 px-5">
             <span>{{ $env_icon }}</span>
@@ -12,7 +12,7 @@
 </div>
 
 @if ($show_details)
-<div class="@container/panel relative bg-gray-150 [.bg-architectural-lines_&]:backdrop-blur-[10px] dark:bg-gray-950 dark:inset-shadow-2xs dark:inset-shadow-black w-full rounded-2xl mb-5 max-[600px]:p-1.25 p-1.75 [&:has([data-ui-panel-header])]:pt-0 focus-none starting-style-transition starting-style-transition--siblings" data-ui-panel>
+<div class="@container/panel relative bg-gray-150 [.bg-architectural-lines_&]:backdrop-blur-[10px] dark:bg-gray-950/35 dark:inset-shadow-2xs dark:inset-shadow-black w-full rounded-2xl mb-8 max-[600px]:p-1.25 p-1.75 [&:has([data-ui-panel-header])]:pt-0 focus-none starting-style-transition starting-style-transition--siblings" data-ui-panel>
     <header class="px-4.5 py-3" data-ui-panel-header>
         <div class="font-medium antialiased flex items-center justify-between text-sm tracking-tight text-gray-700 dark:text-white" data-ui-heading>
             <span class="w-[40%]">Setting</span>
