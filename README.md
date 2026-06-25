@@ -1,61 +1,44 @@
 # Statamic Environment Indicator
 
-> **🚧 v6 BRANCH - Statamic 6 Alpha**
-> This is the development branch for Statamic 6 compatibility. For production use with Statamic 5, please use the [main branch](../../tree/main) or install v1.x.
+> Visual environment indicators for the Statamic control panel — instantly see whether you're working in Local, Staging, or Production.
 
-> Visual environment indicators for Statamic 6 control panel - helps you instantly identify which environment you're working in.
+The addon adds a colored badge and background pattern to the CP header, plus a dashboard widget with environment details, so you never push the wrong button in the wrong environment again.
 
 ## Features
 
-- **Visual Header Badge** - Displays environment name in the CP header (Local, Staging, Production)
-- **Background Patterns** - Customizable header patterns (stripes, dots, checkerboard, solid)
-- **Dashboard Widget** - Shows detailed environment information
-- **Highly Configurable** - Custom environment types, colors, labels, and patterns
-- **Translation Ready** - Full i18n support
-- **Auto-Regenerating CSS** - Changes to config or CSS apply automatically
+- **Header Badge** — Shows the current environment name in the CP header (Local, Staging, Production, …)
+- **Header Background Patterns** — Distinct header patterns per environment (stripes, dots, checkerboard, solid)
+- **Dashboard Widget** — Built with native Statamic UI components, with full dark-mode support
+- **Highly Configurable** — Custom environment types, labels, icons, colors, and patterns
+- **Translation Ready** — Full i18n support with publishable language files
+- **Auto-Regenerating CSS** — Edits to the config apply automatically, no build step
 
+## Compatibility
 
-## Requirements
+| Addon version | Statamic | PHP    | Laravel |
+|---------------|----------|--------|---------|
+| **2.x** (this version) | 6.0+ | 8.3+ | 12.0+ |
+| 1.x           | 5.0+     | 8.1+   | 10 / 11 |
 
-- **Statamic 6.0+** (alpha)
-- **Laravel 12.0+**
-- **PHP 8.3+**
-
-> **Note:** For Statamic 5, use version 1.x from the main branch.
+> Installing on **Statamic 5**? Require `^1.0` instead — see [Upgrading from 1.x](#upgrading-from-1x).
 
 ## Installation
 
-### For Statamic 6 Alpha Testing
-
-Install from the v6 branch:
+Install via Composer:
 
 ```bash
-composer require mikomagni/statamic-environment:v6.x-dev
+composer require mikomagni/statamic-environment
 ```
 
-Or add to your `composer.json`:
+Composer automatically resolves the correct release for your Statamic version (2.x for Statamic 6, 1.x for Statamic 5).
 
-```json
-{
-    "require": {
-        "mikomagni/statamic-environment": "v6.x-dev"
-    }
-}
-```
-
-### For Statamic 5 (Stable)
-
-```bash
-composer require mikomagni/statamic-environment:^1.0
-```
-
-Publish the configuration file:
+The config file is published automatically on install. To (re)publish it manually:
 
 ```bash
 php artisan vendor:publish --tag=statamic-env-config
 ```
 
-## Enable Widget
+## Enable the Widget
 
 Add the widget to your control panel in `config/statamic/cp.php`:
 
@@ -71,11 +54,11 @@ Add the widget to your control panel in `config/statamic/cp.php`:
 
 ## Configuration
 
-All configuration is done in `config/statamic_environment.php`.
+All configuration lives in `config/statamic_environment.php`.
 
 ### Environment Types
 
-Define which `APP_ENV` values map to which environment types:
+Map your `APP_ENV` values to environment types. The keys are your type names; the arrays list the `APP_ENV` values that resolve to each type:
 
 ```php
 'environments' => [
@@ -85,9 +68,11 @@ Define which `APP_ENV` values map to which environment types:
 ],
 ```
 
+An `APP_ENV` that doesn't match any type resolves to `undefined`, which triggers a warning in the widget and the `undefined` icon.
+
 ### Labels & Icons
 
-Customize the display text and emojis:
+Customize the display text and emoji per type:
 
 ```php
 'labels' => [
@@ -106,106 +91,111 @@ Customize the display text and emojis:
 
 ### Badge Colors
 
-Customize the header badge colors:
+Style the header badge per type. `border` is optional:
 
 ```php
 'colors' => [
     'local' => [
-        'background' => 'rgb(39, 145, 16)',
+        'background' => 'rgba(39, 145, 16, 0.6)',
         'color' => 'white',
+        'border' => '1px solid rgba(39, 145, 16, 1)',
     ],
     'staging' => [
-        'background' => 'rgb(153, 0, 0)',
+        'background' => 'rgba(153, 0, 0, 0.6)',
         'color' => 'white',
+        'border' => '1px solid rgba(153, 0, 0, 1)',
     ],
     'production' => [
-        'background' => 'rgb(43, 45, 48)',
+        'background' => 'transparent',
         'color' => 'white',
-        'border' => '1px solid white',
+        'border' => '1px solid rgba(255, 255, 255, 0.5)',
     ],
 ],
 ```
 
 ### Widget Details
 
-Control when the widget shows detailed environment information:
+Control when the widget shows the detailed environment table:
 
 ```php
 'widget' => [
-    'show_details' => ['local', 'staging'], // Show for specific environments
+    'show_details' => ['local', 'staging'], // Show only for these types
     // 'show_details' => true,              // Always show
     // 'show_details' => false,             // Never show
 ],
 ```
 
-**Options:**
-- **Array** - Show details only for specified environment types: `['local', 'staging']`
-- **`true`** - Always show details for all environments
-- **`false`** - Never show details
+**Accepted values:**
+- **Array** — show details only for the listed environment types, e.g. `['local', 'staging']`
+- **`true`** — always show details
+- **`false`** — never show details
+
+When enabled, the table reports: `APP_NAME`, `APP_ENV`, `APP_DEBUG`, `APP_URL`, `MAIL_MAILER`, `MAIL_FROM_ADDRESS`, `STATAMIC_GIT_ENABLED`, `STATAMIC_GIT_PUSH`, `STATAMIC_STATIC_CACHING_STRATEGY`, and `DEBUGBAR_ENABLED`.
 
 ### Background Patterns
 
-Add visual patterns to the CP header for instant environment identification:
+Give each environment a distinct CP header pattern. Colors are defined directly with `primary` and `secondary` keys:
 
 ```php
 'patterns' => [
     'local' => [
         'type' => 'stripes',
-        'angle' => -55,
-        'primary' => '#1a1a1a',
-        'secondary' => 'rgba(41, 82, 32, 0.8)',
+        'angle' => -45,
+        'primary' => 'transparent',
+        'secondary' => 'rgba(0, 0, 0, 0.6)',
     ],
     'staging' => [
         'type' => 'stripes',
-        'angle' => -55,
-        'primary' => '#1a1a1a',
-        'secondary' => 'rgba(82, 32, 32, 0.8)',
+        'angle' => -45,
+        'primary' => 'transparent',
+        'secondary' => 'rgba(255, 112, 163, 0.2)',
     ],
     'production' => [
         'type' => 'solid',
-        'primary' => '#1a1a1a',
+        'primary' => 'transparent',
     ],
 ],
 ```
 
+> **Note:** The Statamic 6 CP header is always dark, so patterns use flat `primary`/`secondary` keys — no `light_mode`/`dark_mode` nesting. The old nested format from 1.x is still read for backward compatibility, but the simplified format is recommended.
+
 #### Pattern Types
 
-**Stripes** (diagonal lines):
+**Stripes** — diagonal repeating lines:
 ```php
 'type' => 'stripes',
-'angle' => -55,              // Angle in degrees
-'primary' => '#1a1a1a',      // Background color
-'secondary' => 'rgba(...)',  // Stripe color
+'angle' => -45,             // Angle in degrees (default: -55)
+'size' => 10,              // Stripe width in pixels (default: 10)
+'primary' => 'transparent', // Background color
+'secondary' => 'rgba(0, 0, 0, 0.6)', // Stripe color
 ```
 
-**Dots** (polka dot pattern):
+**Dots** — polka-dot pattern:
 ```php
 'type' => 'dots',
-'size' => '4px',             // Dot size
-'spacing' => '20px',         // Space between dots
-'primary' => '#1a1a1a',      // Background color
-'secondary' => 'rgba(...)',  // Dot color
+'size' => '4px',            // Dot size (default: 4px)
+'spacing' => '20px',        // Space between dots (default: 20px)
+'primary' => '#1a1a1a',     // Background color
+'secondary' => '#ff4757',   // Dot color
 ```
 
-**Checkerboard**:
+**Checkerboard:**
 ```php
 'type' => 'checkerboard',
-'size' => 20,                // Square size in pixels
-'primary' => '#1a1a1a',      // Background color
-'secondary' => 'rgba(...)',  // Checkerboard color
+'size' => 20,               // Square size in pixels (default: 20)
+'primary' => '#1a1a1a',     // Background color
+'secondary' => '#ffab00',   // Checkerboard color
 ```
 
-**Solid** (plain color):
+**Solid** — plain color (only needs `primary`):
 ```php
 'type' => 'solid',
-'primary' => '#1a1a1a',      // Background color
+'primary' => 'transparent',
 ```
-
-> **Note:** Statamic 6 CP header is always dark, so colors are defined directly with `primary` and `secondary` keys (no light/dark mode nesting needed).
 
 ## Custom Environment Types
 
-You can completely customize environment type names:
+Type names are fully customizable — you're not limited to `local`/`staging`/`production`. Define your own and provide matching `labels`, `icons`, `colors`, and `patterns`:
 
 ```php
 return [
@@ -278,104 +268,53 @@ return [
 ];
 ```
 
+## How It Works
+
+- A CP middleware adds `env_{APP_ENV}` and `env_type_{type}` classes to the `<body>` tag.
+- The addon generates a dynamic stylesheet from your config and registers it with the CP. The header badge and background patterns are pure CSS keyed off those body classes.
+- The CSS is regenerated automatically whenever the config file changes — no asset compilation or `npm` step required.
+
 ## Translation Support
 
-The widget includes built-in translation support. All text is translatable and follows Laravel's localization conventions.
-
-### Publishing Language Files
-
-To customize translations, publish the language files:
+All widget text is translatable and follows Laravel's localization conventions. To customize translations, publish the language files:
 
 ```bash
 php artisan vendor:publish --tag=statamic-env-lang
 ```
 
-This creates language files in `resources/lang/vendor/statamic-environment/` where you can:
-- Translate the widget to other languages by creating language folders (e.g., `es`, `fr`, `de`)
-- Customize the English text by editing `en/widget.php`
+This copies the files to `resources/lang/vendor/statamic-environment/`, where you can:
+- Add new languages by creating a locale folder (e.g. `es`, `fr`, `de`)
+- Edit the English strings in `en/widget.php`
 
 ### Available Translation Keys
 
-- `environment` - "Environment" heading
-- `viewing_version` - Main status message
-- `unusual_env_detected` - Warning for unknown environments
-- Various environment variable labels (`app_name`, `app_env`, etc.)
-- Boolean values (`true`, `false`)
+- `viewing_version` — main status message shown in the widget
+- `unusual_env_detected` — warning for unrecognized environments
+- `app_name`, `app_env`, `app_debug`, `app_url`, `mail_mailer`, `mail_from_address`, `statamic_git_enabled`, `statamic_git_push` — detail table labels
+- `true`, `false` — boolean values
 
-## Background Patterns
+## Upgrading from 1.x
 
-Configure visual header patterns for each environment to make them easily distinguishable:
+Version 2.0 targets Statamic 6 and raises the minimum platform requirements:
 
-### Pattern Types
+- **Statamic 6.0+**, **PHP 8.3+**, **Laravel 12.0+**
+- The dashboard widget was rebuilt with native Statamic 6 UI components (full dark-mode support).
+- Widget configuration is simplified to a single `show_details` option. The old `always_show_details` / `never_show_details` flags are removed — use `'show_details' => true` or `false` instead.
+- Pattern colors use flat `primary`/`secondary` keys instead of `light_mode`/`dark_mode` nesting (the old format still works, but updating is recommended).
 
-The addon supports several pattern types:
+To upgrade, require the new version and run `composer update`:
 
-- **`stripes`** - Diagonal repeating stripes (default for local/staging)
-- **`solid`** - Solid color background (default for production)
-- **`dots`** - Repeating dot pattern
-- **`checkerboard`** - Checkerboard pattern
-
-### Pattern Configuration
-
-Add pattern configuration to your `config/statamic_environment.php`:
-
-```php
-'patterns' => [
-    'local' => [
-        'type' => 'stripes',
-        'angle' => -55,
-        'size' => 10, // stripe width in pixels
-        'light_mode' => [
-            'primary' => '#ffffff',
-            'secondary' => 'rgba(211, 255, 201, 0.8)',
-        ],
-        'dark_mode' => [
-            'primary' => '#1a1a1a',
-            'secondary' => 'rgba(41, 82, 32, 0.8)',
-        ],
-    ],
-    'custom_env' => [
-        'type' => 'dots',
-        'size' => '4px',       // dot size
-        'spacing' => '20px',   // space between dots
-        'light_mode' => [
-            'primary' => '#ffffff',    // background color
-            'secondary' => '#ff6b6b',  // dot color
-        ],
-        'dark_mode' => [
-            'primary' => '#1a1a1a',
-            'secondary' => '#ff4757',
-        ],
-    ],
-    'another_custom_env' => [
-        'type' => 'checkerboard',
-        'size' => 20,          // checkerboard square size in pixels
-        'light_mode' => [
-            'primary' => '#ffffff',    // background color
-            'secondary' => '#ffc107',  // checkerboard color
-        ],
-        'dark_mode' => [
-            'primary' => '#1a1a1a',
-            'secondary' => '#ff9800',
-        ],
-    ],
-],
+```bash
+composer require mikomagni/statamic-environment:^2.0
+composer update mikomagni/statamic-environment
 ```
 
-### Pattern Options
+Staying on Statamic 5? Pin to the 1.x line — it remains installable but is no longer actively maintained:
 
-Each pattern type supports different configuration options:
+```bash
+composer require mikomagni/statamic-environment:^1.0
+```
 
-**Stripes:**
-- `angle`: Stripe angle in degrees (default: -55)
-- `size`: Stripe width in pixels (default: 10)
+## License
 
-**Dots:**
-- `size`: Dot size (default: "4px")
-- `spacing`: Space between dots (default: "20px")
-
-**Checkerboard:**
-- `size`: Size of checkerboard squares in pixels (default: 20)
-
-**Solid:**
-- Only requires `primary` color
+This addon is open-sourced software licensed under the [MIT license](LICENSE).
