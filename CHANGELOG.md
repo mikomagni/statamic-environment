@@ -2,6 +2,11 @@
 
 All notable changes to Statamic Environment Indicator will be documented in this file.
 
+## [2.0.1] - 2026-06-25
+
+### Documentation
+- README and changelog wording cleanup. No functional changes from 2.0.0.
+
 ## [2.0.0] - 2026-06-25
 
 The first release for **Statamic 6**. This is now the actively maintained line; the 1.x line for Statamic 5 is in maintenance mode.
@@ -48,5 +53,6 @@ The first release for **Statamic 6**. This is now the actively maintained line; 
 - Support for custom environment type names.
 - Widget display control (show details for specific environments, always, or never).
 
+[2.0.1]: https://github.com/mikomagni/statamic-environment/releases/tag/v2.0.1
 [2.0.0]: https://github.com/mikomagni/statamic-environment/releases/tag/v2.0.0
 [1.0.0]: https://github.com/mikomagni/statamic-environment/releases/tag/v1.0.0
