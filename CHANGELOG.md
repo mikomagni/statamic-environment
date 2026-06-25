@@ -10,17 +10,20 @@ The first release for **Statamic 6**. This is now the actively maintained line; 
 - **BREAKING:** Now requires Statamic 6 (`statamic/cms ^6.0`).
 - **BREAKING:** Minimum PHP version raised from 8.1 to 8.3.
 - **BREAKING:** Minimum Laravel version raised to 12.0.
-- **BREAKING:** Widget display config simplified to a single `show_details` option. The `always_show_details` and `never_show_details` flags are removed — use `'show_details' => true` or `'show_details' => false` instead.
-- Dashboard widget rebuilt with native Statamic 6 UI components (`<ui-widget>`, `<ui-table>`, …) for full dark-mode support.
+- **BREAKING:** Widget display config simplified to a single `show_details` option. The `always_show_details` and `never_show_details` flags are removed. Use `'show_details' => true` or `'show_details' => false` instead.
+- Dashboard widget rebuilt with native Statamic 6 UI components (`<ui-widget>`, `<ui-table>`) for full dark-mode support.
 - Updated CSS selectors for the new Statamic 6 header structure.
 - Pattern colors are now defined directly with `primary`/`secondary` keys; the `light_mode`/`dark_mode` nesting is no longer needed because the Statamic 6 CP header is always dark.
 - Widget now reads configuration via `config()` so it survives `config:cache`.
 
 ### Added
-- Dynamic CSS regenerates automatically when the config file changes — no build step.
+- Dynamic CSS regenerates automatically when the config file changes, with no build step.
 - Backward compatibility for the old `light_mode`/`dark_mode` pattern format from 1.x.
 - `STATAMIC_STATIC_CACHING_STRATEGY` row added to the widget detail table.
 - `DEBUGBAR_ENABLED` row added to the widget detail table.
+
+### Fixed
+- Widget no longer leaves a tall empty area when environment details are hidden. The card now collapses to the single status line.
 
 ### Upgrading from 1.x
 - Require Statamic 6, PHP 8.3+, and Laravel 12+.

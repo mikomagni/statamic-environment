@@ -52,6 +52,11 @@ class CssAsset
 
         $css = '';
 
+        // Collapse the dashboard widget's reserved height (the <ui-widget> card
+        // carries a `min-h-54` utility) when environment details are hidden, so
+        // the widget hugs its single status line instead of leaving empty space.
+        $css .= ".env-no-details,\n.env-no-details .min-h-54 {\n    min-height: 0 !important;\n}\n\n";
+
         // Generate header background patterns
         $css .= self::generatePatternCss($config);
 

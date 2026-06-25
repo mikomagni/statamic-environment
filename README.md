@@ -1,17 +1,17 @@
 # Statamic Environment Indicator
 
-> Visual environment indicators for the Statamic control panel — instantly see whether you're working in Local, Staging, or Production.
+> Visual environment indicators for the Statamic control panel, instantly see whether you're working in Local, Staging, or Production.
 
 The addon adds a colored badge and background pattern to the CP header, plus a dashboard widget with environment details, so you never push the wrong button in the wrong environment again.
 
 ## Features
 
-- **Header Badge** — Shows the current environment name in the CP header (Local, Staging, Production, …)
-- **Header Background Patterns** — Distinct header patterns per environment (stripes, dots, checkerboard, solid)
-- **Dashboard Widget** — Built with native Statamic UI components, with full dark-mode support
-- **Highly Configurable** — Custom environment types, labels, icons, colors, and patterns
-- **Translation Ready** — Full i18n support with publishable language files
-- **Auto-Regenerating CSS** — Edits to the config apply automatically, no build step
+- **Header Badge**: Shows the current environment name in the CP header (Local, Staging, Production)
+- **Header Background Patterns**: Distinct header patterns per environment (stripes, dots, checkerboard, solid)
+- **Dashboard Widget**: Built with native Statamic UI components, with full dark-mode support
+- **Highly Configurable**: Custom environment types, labels, icons, colors, and patterns
+- **Translation Ready**: Full i18n support with publishable language files
+- **Auto-Regenerating CSS**: Edits to the config apply automatically, no build step
 
 ## Compatibility
 
@@ -20,7 +20,7 @@ The addon adds a colored badge and background pattern to the CP header, plus a d
 | **2.x** (this version) | 6.0+ | 8.3+ | 12.0+ |
 | 1.x           | 5.0+     | 8.1+   | 10 / 11 |
 
-> Installing on **Statamic 5**? Require `^1.0` instead — see [Upgrading from 1.x](#upgrading-from-1x).
+> Installing on **Statamic 5**? Require `^1.0` instead. See [Upgrading from 1.x](#upgrading-from-1x).
 
 ## Installation
 
@@ -126,9 +126,9 @@ Control when the widget shows the detailed environment table:
 ```
 
 **Accepted values:**
-- **Array** — show details only for the listed environment types, e.g. `['local', 'staging']`
-- **`true`** — always show details
-- **`false`** — never show details
+- **Array**: show details only for the listed environment types, e.g. `['local', 'staging']`
+- **`true`**: always show details
+- **`false`**: never show details
 
 When enabled, the table reports: `APP_NAME`, `APP_ENV`, `APP_DEBUG`, `APP_URL`, `MAIL_MAILER`, `MAIL_FROM_ADDRESS`, `STATAMIC_GIT_ENABLED`, `STATAMIC_GIT_PUSH`, `STATAMIC_STATIC_CACHING_STRATEGY`, and `DEBUGBAR_ENABLED`.
 
@@ -157,11 +157,11 @@ Give each environment a distinct CP header pattern. Colors are defined directly 
 ],
 ```
 
-> **Note:** The Statamic 6 CP header is always dark, so patterns use flat `primary`/`secondary` keys — no `light_mode`/`dark_mode` nesting. The old nested format from 1.x is still read for backward compatibility, but the simplified format is recommended.
+> **Note:** The Statamic 6 CP header is always dark, so patterns use flat `primary`/`secondary` keys, with no `light_mode`/`dark_mode` nesting. The old nested format from 1.x is still read for backward compatibility, but the simplified format is recommended.
 
 #### Pattern Types
 
-**Stripes** — diagonal repeating lines:
+**Stripes**: diagonal repeating lines:
 ```php
 'type' => 'stripes',
 'angle' => -45,             // Angle in degrees (default: -55)
@@ -170,7 +170,7 @@ Give each environment a distinct CP header pattern. Colors are defined directly 
 'secondary' => 'rgba(0, 0, 0, 0.6)', // Stripe color
 ```
 
-**Dots** — polka-dot pattern:
+**Dots**: polka-dot pattern:
 ```php
 'type' => 'dots',
 'size' => '4px',            // Dot size (default: 4px)
@@ -187,7 +187,7 @@ Give each environment a distinct CP header pattern. Colors are defined directly 
 'secondary' => '#ffab00',   // Checkerboard color
 ```
 
-**Solid** — plain color (only needs `primary`):
+**Solid**: plain color (only needs `primary`):
 ```php
 'type' => 'solid',
 'primary' => 'transparent',
@@ -195,7 +195,7 @@ Give each environment a distinct CP header pattern. Colors are defined directly 
 
 ## Custom Environment Types
 
-Type names are fully customizable — you're not limited to `local`/`staging`/`production`. Define your own and provide matching `labels`, `icons`, `colors`, and `patterns`:
+Type names are fully customizable, so you're not limited to `local`/`staging`/`production`. Define your own and provide matching `labels`, `icons`, `colors`, and `patterns`:
 
 ```php
 return [
@@ -272,7 +272,7 @@ return [
 
 - A CP middleware adds `env_{APP_ENV}` and `env_type_{type}` classes to the `<body>` tag.
 - The addon generates a dynamic stylesheet from your config and registers it with the CP. The header badge and background patterns are pure CSS keyed off those body classes.
-- The CSS is regenerated automatically whenever the config file changes — no asset compilation or `npm` step required.
+- The CSS is regenerated automatically whenever the config file changes, no asset compilation or `npm` step required.
 
 ## Translation Support
 
@@ -288,10 +288,10 @@ This copies the files to `resources/lang/vendor/statamic-environment/`, where yo
 
 ### Available Translation Keys
 
-- `viewing_version` — main status message shown in the widget
-- `unusual_env_detected` — warning for unrecognized environments
-- `app_name`, `app_env`, `app_debug`, `app_url`, `mail_mailer`, `mail_from_address`, `statamic_git_enabled`, `statamic_git_push` — detail table labels
-- `true`, `false` — boolean values
+- `viewing_version`: main status message shown in the widget
+- `unusual_env_detected`: warning for unrecognized environments
+- `app_name`, `app_env`, `app_debug`, `app_url`, `mail_mailer`, `mail_from_address`, `statamic_git_enabled`, `statamic_git_push`: detail table labels
+- `true`, `false`: boolean values
 
 ## Upgrading from 1.x
 
@@ -299,7 +299,7 @@ Version 2.0 targets Statamic 6 and raises the minimum platform requirements:
 
 - **Statamic 6.0+**, **PHP 8.3+**, **Laravel 12.0+**
 - The dashboard widget was rebuilt with native Statamic 6 UI components (full dark-mode support).
-- Widget configuration is simplified to a single `show_details` option. The old `always_show_details` / `never_show_details` flags are removed — use `'show_details' => true` or `false` instead.
+- Widget configuration is simplified to a single `show_details` option. The old `always_show_details` / `never_show_details` flags are removed. Use `'show_details' => true` or `false` instead.
 - Pattern colors use flat `primary`/`secondary` keys instead of `light_mode`/`dark_mode` nesting (the old format still works, but updating is recommended).
 
 To upgrade, require the new version and run `composer update`:
@@ -309,7 +309,7 @@ composer require mikomagni/statamic-environment:^2.0
 composer update mikomagni/statamic-environment
 ```
 
-Staying on Statamic 5? Pin to the 1.x line — it remains installable but is no longer actively maintained:
+Staying on Statamic 5? Pin to the 1.x line, which remains installable but is no longer actively maintained:
 
 ```bash
 composer require mikomagni/statamic-environment:^1.0
