@@ -1,5 +1,12 @@
-<ui-widget class="env_{{ $env }} env_type_{{ $env_type }}">
-    <div class="flex items-center gap-2 px-4 py-3 text-sm border-b border-gray-200 dark:border-gray-700">
+<ui-widget @class([
+    "env_{$env}",
+    "env_type_{$env_type}",
+    'env-no-details' => ! $show_details,
+])>
+    <div @class([
+        'flex items-center gap-2 px-4 py-3 text-sm',
+        'border-b border-gray-200 dark:border-gray-700' => $show_details,
+    ])>
         <span>{{ $env_icon }}</span>
         @if ($env_type !== 'undefined')
             <span>{!! __('statamic_environment::widget.viewing_version', ['label' => $env_label, 'app_name' => "<strong><a target='_blank' href='{$app_url}' class='text-blue hover:text-blue-600'>{$app_name}</a></strong>"]) !!}</span>
@@ -9,7 +16,7 @@
     </div>
 
     @if ($show_details)
-        <div class="px-4">
+        <div class="px-4 pb-3">
             <ui-table>
                 <ui-table-columns>
                     <ui-table-column>Setting</ui-table-column>

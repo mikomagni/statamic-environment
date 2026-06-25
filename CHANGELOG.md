@@ -22,6 +22,9 @@ The first release for **Statamic 6**. This is now the actively maintained line; 
 - `STATAMIC_STATIC_CACHING_STRATEGY` row added to the widget detail table.
 - `DEBUGBAR_ENABLED` row added to the widget detail table.
 
+### Fixed
+- Widget no longer leaves a tall empty area when environment details are hidden — the card now collapses to the single status line.
+
 ### Upgrading from 1.x
 - Require Statamic 6, PHP 8.3+, and Laravel 12+.
 - Replace `always_show_details` / `never_show_details` with `'show_details' => true | false`.
